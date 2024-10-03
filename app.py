@@ -18,15 +18,16 @@ def insert_data():
         data = request.get_json()
         sensor = data.get("sensor")
         value = data.get("value")
+        message = data.get("message")
 
         if sensor is None or value is None:
-            return jsonify({"status": "error", "message": "Both 'sensor' and 'value' are required"}), 400
+            return jsonify({"status": "error", "message": "Both 'sensor' and 'value' are required and 'message' are required"}), 400
 
         try:
             conn = mysql.connector.connect(**db_config)
             cursor = conn.cursor()
 
-            cursor.execute("INSERT INTO sensor_data (sensor, value) VALUES (%s, %s)", (sensor, value))
+            cursor.execute("INSERT INTO sensor_data (sensor, value, message) VALUES (%s, %s, %s)", (sensor, value, message))
             conn.commit()
 
             cursor.close()
@@ -48,7 +49,7 @@ def get_data():
         cursor = conn.cursor()
 
         # Ejecutar consulta para obtener todos los datos
-        cursor.execute("SELECT id, sensor, value, timestamp FROM sensor_data")
+        cursor.execute("SELECT id, sensor, value, message, timestamp FROM sensor_data")
         rows = cursor.fetchall()
 
         # Cerrar el cursor y la conexión
@@ -62,7 +63,8 @@ def get_data():
                 "id": row[0],
                 "sensor": row[1],
                 "value": row[2],
-                "timestamp": row[3].strftime("%Y-%m-%d %H:%M:%S")  # Formato de fecha
+                "message":row[3],
+                "timestamp": row[4].strftime("%Y-%m-%d %H:%M:%S")  # Formato de fecha
             })
 
         return jsonify({"status": "success", "data": results}), 200
