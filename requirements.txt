@@ -1,0 +1,13 @@
+Flask #Flask: El marco web que estás usando para desarrollar la API.
+mysql-connector-python
+
+# pip install -r requirements.txt para instalar las dependencias.
+
+# Iniciar el Servidor Flask
+# export FLASK_APP=app.py    # Para Linux o macOS
+#set FLASK_APP=app.py       # Para Windows
+# python app.py # vs code windows
+
+#export FLASK_ENV=development  # (opcional) para habilitar el modo de desarrollo
+#flask run                    # Inicia el servidor
+
